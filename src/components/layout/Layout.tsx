@@ -1,5 +1,4 @@
 import React from 'react';
-import { useAuth } from '../../contexts/AuthContext';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 
@@ -8,8 +7,6 @@ interface LayoutProps {
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const { user } = useAuth();
-
   return (
     <div className="flex h-screen bg-gray-50">
       <Sidebar />
