@@ -29,22 +29,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (email: string, password: string) => {
     try {
-      // Try with email field first, fallback to username
-      const response = await authAPI.login({ email, password });
+      console.log('Attempting login with:', { email, password });
       
-      const { token, ...userData } = response.data;
+      // Use email field for login
+      const response = await authAPI.login({ email, password });
+      console.log('Login response:', response.data);
+      
+      const { token, user_id, ...userData } = response.data;
       
       if (!token) {
         throw new Error('No authentication token received');
       }
       
+      // Store token and set user
       localStorage.setItem('authToken', token);
-      setUser(userData);
+      
+      // Create user object from response
+      const user: User = {
+        id: user_id,
+        email: userData.email,
+        first_name: userData.first_name,
+        last_name: userData.last_name,
+        role: userData.role,
+        phone: '',
+        department: '',
+        account: 1 // Default account ID
+      };
+      
+      setUser(user);
+      console.log('Login successful, user set:', user);
       
     } catch (error: any) {
       console.error('Login failed:', error);
       const errorMessage = error.response?.data?.error || 
                           error.response?.data?.detail || 
+                          error.message ||
                           'Login failed. Please check your credentials.';
       throw new Error(errorMessage);
     }
