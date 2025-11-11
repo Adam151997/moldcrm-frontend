@@ -18,15 +18,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (token) {
-      // Verify token and get user profile from REAL API
       authAPI.getProfile()
-        .then(response => {
-          setUser(response.data);
-        })
-        .catch((error) => {
-          console.error('Token validation failed:', error);
-          localStorage.removeItem('authToken');
-        })
+        .then(response => setUser(response.data))
+        .catch(() => localStorage.removeItem('authToken'))
         .finally(() => setIsLoading(false));
     } else {
       setIsLoading(false);
@@ -35,24 +29,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (email: string, password: string) => {
     try {
-      // REAL Django authentication
-      const response = await authAPI.login(email, password);
-      const { token, user } = response.data;
+      // Try with email field first, fallback to username
+      const response = await authAPI.login({ email, password });
       
-      // Store token and set user
+      const { token, ...userData } = response.data;
+      
+      if (!token) {
+        throw new Error('No authentication token received');
+      }
+      
       localStorage.setItem('authToken', token);
-      setUser(user);
+      setUser(userData);
+      
     } catch (error: any) {
       console.error('Login failed:', error);
-      throw new Error(error.response?.data?.detail || 'Login failed. Please check your credentials.');
+      const errorMessage = error.response?.data?.error || 
+                          error.response?.data?.detail || 
+                          'Login failed. Please check your credentials.';
+      throw new Error(errorMessage);
     }
   };
 
   const logout = () => {
     localStorage.removeItem('authToken');
     setUser(null);
-    // Optionally call backend logout endpoint
-    // authAPI.logout().catch(console.error);
   };
 
   return (
