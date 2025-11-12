@@ -31,11 +31,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       console.log('Attempting login with:', { email, password });
       
-      // Use email field for login
-      const response = await authAPI.login({ email, password });
+      // 🚨 CRITICAL FIX: Use "username" field instead of "email"
+      const response = await authAPI.login({ username: email, password });
       console.log('Login response:', response.data);
       
-      const { token, user_id, ...userData } = response.data;
+      const { token, user_id, email: userEmail, first_name, last_name, role } = response.data;
       
       if (!token) {
         throw new Error('No authentication token received');
@@ -47,10 +47,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Create user object from response
       const user: User = {
         id: user_id,
-        email: userData.email,
-        first_name: userData.first_name,
-        last_name: userData.last_name,
-        role: userData.role,
+        email: userEmail,
+        first_name: first_name,
+        last_name: last_name,
+        role: role,
         phone: '',
         department: '',
         account: 1 // Default account ID
@@ -63,6 +63,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error('Login failed:', error);
       const errorMessage = error.response?.data?.error || 
                           error.response?.data?.detail || 
+                          error.response?.data?.non_field_errors?.[0] ||
                           error.message ||
                           'Login failed. Please check your credentials.';
       throw new Error(errorMessage);

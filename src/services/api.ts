@@ -31,7 +31,8 @@ api.interceptors.response.use(
 );
 
 export const authAPI = {
-  login: (data: { username?: string; email?: string; password: string }) => 
+  // 🚨 CRITICAL FIX: Expect username field (not email)
+  login: (data: { username: string; password: string }) => 
     api.post('/auth/login/', data),
   logout: () => api.post('/auth/logout/'),
   getProfile: () => api.get('/users/profile/'),
