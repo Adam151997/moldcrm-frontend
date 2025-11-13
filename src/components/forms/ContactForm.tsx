@@ -66,10 +66,10 @@ export const ContactForm: React.FC<ContactFormProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl w-full max-w-md">
-        <div className="flex justify-between items-center p-6 border-b border-gray-200">
-          <h2 className="text-xl font-semibold">
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl w-full max-w-md shadow-lg">
+        <div className="flex justify-between items-center p-6 border-b border-gray-200 sticky top-0 bg-white rounded-t-xl">
+          <h2 className="text-xl font-semibold text-gray-900">
             {contact ? 'Edit Contact' : 'Add New Contact'}
           </h2>
           <button
@@ -80,10 +80,10 @@ export const ContactForm: React.FC<ContactFormProps> = ({
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="p-6 space-y-5">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label htmlFor="first_name" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="first_name" className="form-label">
                 First Name *
               </label>
               <input
@@ -93,11 +93,11 @@ export const ContactForm: React.FC<ContactFormProps> = ({
                 required
                 value={formData.first_name}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="input-field"
               />
             </div>
             <div>
-              <label htmlFor="last_name" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="last_name" className="form-label">
                 Last Name *
               </label>
               <input
@@ -107,13 +107,13 @@ export const ContactForm: React.FC<ContactFormProps> = ({
                 required
                 value={formData.last_name}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="input-field"
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="email" className="form-label">
               Email *
             </label>
             <input
@@ -123,12 +123,12 @@ export const ContactForm: React.FC<ContactFormProps> = ({
               required
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="input-field"
             />
           </div>
 
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="phone" className="form-label">
               Phone
             </label>
             <input
@@ -137,12 +137,12 @@ export const ContactForm: React.FC<ContactFormProps> = ({
               type="tel"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="input-field"
             />
           </div>
 
           <div>
-            <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="company" className="form-label">
               Company
             </label>
             <input
@@ -151,12 +151,12 @@ export const ContactForm: React.FC<ContactFormProps> = ({
               type="text"
               value={formData.company}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="input-field"
             />
           </div>
 
           <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="title" className="form-label">
               Title
             </label>
             <input
@@ -165,12 +165,12 @@ export const ContactForm: React.FC<ContactFormProps> = ({
               type="text"
               value={formData.title}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="input-field"
             />
           </div>
 
           <div>
-            <label htmlFor="department" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="department" className="form-label">
               Department
             </label>
             <input
@@ -179,15 +179,16 @@ export const ContactForm: React.FC<ContactFormProps> = ({
               type="text"
               value={formData.department}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="input-field"
             />
           </div>
 
-          <div className="flex justify-end space-x-3 pt-4">
+          <div className="flex justify-end space-x-3 pt-4 border-t border-gray-100">
             <Button
               type="button"
               variant="outline"
               onClick={onClose}
+              disabled={mutation.isPending}
             >
               Cancel
             </Button>

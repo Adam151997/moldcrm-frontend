@@ -127,12 +127,12 @@ export const PipelineSettings: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Pipeline Settings</h1>
-          <p className="text-gray-600 mt-2">Configure your deal pipeline stages</p>
+          <h1 className="text-3xl font-semibold text-gray-900 mb-2">Pipeline Settings</h1>
+          <p className="text-gray-600">Configure your deal pipeline stages</p>
         </div>
         <Button
           onClick={() => setShowForm(true)}
@@ -144,7 +144,7 @@ export const PipelineSettings: React.FC = () => {
       </div>
 
       {/* Stages List */}
-      <Card className="border border-gray-200">
+      <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Settings2 className="h-5 w-5 text-gray-600" />
@@ -171,12 +171,12 @@ export const PipelineSettings: React.FC = () => {
                     <p className="text-sm text-gray-500">
                       {stage.name}
                       {stage.is_closed && (
-                        <span className="ml-2 text-xs bg-gray-200 px-2 py-0.5 rounded-full">
+                        <span className="ml-2 badge badge-gray">
                           Closed
                         </span>
                       )}
                       {stage.is_won && (
-                        <span className="ml-2 text-xs bg-green-200 text-green-800 px-2 py-0.5 rounded-full">
+                        <span className="ml-2 badge badge-success">
                           Won
                         </span>
                       )}
@@ -206,10 +206,12 @@ export const PipelineSettings: React.FC = () => {
             ))}
 
             {(!stages || stages.length === 0) && (
-              <div className="text-center py-12">
-                <Settings2 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-500">No pipeline stages configured</p>
-                <p className="text-sm text-gray-400 mt-2">Add your first stage to get started</p>
+              <div className="empty-state">
+                <div className="p-4 bg-gray-100 rounded-full inline-block mb-4">
+                  <Settings2 className="h-10 w-10 text-gray-400" />
+                </div>
+                <h3 className="text-base font-medium text-gray-900 mb-1">No pipeline stages configured</h3>
+                <p className="text-sm text-gray-500">Add your first stage to get started</p>
               </div>
             )}
           </div>
@@ -234,7 +236,7 @@ export const PipelineSettings: React.FC = () => {
 
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="form-label">
                   Display Name *
                 </label>
                 <input
@@ -242,13 +244,13 @@ export const PipelineSettings: React.FC = () => {
                   required
                   value={formData.display_name}
                   onChange={(e) => setFormData({ ...formData, display_name: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="input-field"
                   placeholder="e.g., Qualification"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="form-label">
                   Internal Name *
                 </label>
                 <input
@@ -256,14 +258,14 @@ export const PipelineSettings: React.FC = () => {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="input-field"
                   placeholder="e.g., qualification"
                 />
                 <p className="text-xs text-gray-500 mt-1">Lowercase, no spaces (used for API)</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="form-label">
                   Color
                 </label>
                 <div className="grid grid-cols-4 gap-2">

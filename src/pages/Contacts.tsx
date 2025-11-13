@@ -86,18 +86,18 @@ export const Contacts: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-8">
         <div className="flex justify-between items-center">
           <div>
-            <div className="h-8 w-48 bg-gray-200 rounded-lg animate-pulse"></div>
-            <div className="h-4 w-64 bg-gray-200 rounded-lg animate-pulse mt-2"></div>
+            <div className="h-9 w-48 bg-gray-200 rounded-lg animate-pulse"></div>
+            <div className="h-5 w-80 bg-gray-200 rounded-lg animate-pulse mt-3"></div>
           </div>
           <div className="h-10 w-32 bg-gray-200 rounded-lg animate-pulse"></div>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="bg-white rounded-xl border border-gray-200 p-6 animate-pulse">
+            <div key={i} className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm animate-pulse">
               <div className="h-4 w-20 bg-gray-200 rounded"></div>
               <div className="h-8 w-16 bg-gray-200 rounded mt-2"></div>
             </div>
@@ -110,10 +110,10 @@ export const Contacts: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Contacts</h1>
-          <p className="text-gray-600 mt-2">Manage your customer relationships</p>
+          <h1 className="text-3xl font-semibold text-gray-900 mb-2">Contacts</h1>
+          <p className="text-gray-600">Manage your customer relationships</p>
         </div>
         <div className="flex space-x-3">
           <Button
@@ -134,7 +134,7 @@ export const Contacts: React.FC = () => {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         <StatCard
           title="Total Contacts"
           value={contactStats.total}
@@ -162,9 +162,9 @@ export const Contacts: React.FC = () => {
       </div>
 
       {/* Search and Actions */}
-      <Card className="border border-gray-200">
-        <CardContent className="p-6">
-          <div className="flex flex-col sm:flex-row gap-4">
+      <Card>
+        <CardContent>
+          <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <input
@@ -172,128 +172,113 @@ export const Contacts: React.FC = () => {
                 placeholder="Search contacts by name, email, or company..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="input-field pl-10"
               />
             </div>
             <Button variant="outline" icon={Filter}>
-              Filter
-            </Button>
-            <Button variant="outline" icon={Download}>
-              Export
-            </Button>
-            <Button variant="outline" icon={Upload}>
-              Import
+              Filters
             </Button>
           </div>
         </CardContent>
       </Card>
 
       {/* Contacts Table */}
-      <Card className="border border-gray-200">
+      <Card>
         <CardHeader>
-          <CardTitle>All Contacts</CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle>All Contacts ({filteredContacts?.length || 0})</CardTitle>
+          </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="table-modern">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">Contact</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">Company</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">Contact Info</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">Deals</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">Source</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">Actions</th>
+                <tr>
+                  <th className="text-left py-3 px-6">Contact</th>
+                  <th className="text-left py-3 px-6">Company</th>
+                  <th className="text-left py-3 px-6">Contact Info</th>
+                  <th className="text-left py-3 px-6">Deals</th>
+                  <th className="text-left py-3 px-6">Source</th>
+                  <th className="text-right py-3 px-6">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredContacts?.map((contact) => (
-                  <tr key={contact.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                    <td className="py-3 px-4">
-                      <div className="flex items-center space-x-3">
-                        <div className="h-10 w-10 bg-primary-100 rounded-full flex items-center justify-center">
-                          <span className="text-primary-600 font-medium text-sm">
+                  <tr key={contact.id}>
+                    <td className="py-4 px-6">
+                      <div className="flex items-center gap-3">
+                        <div className="h-9 w-9 bg-gradient-to-br from-primary-100 to-primary-50 rounded-lg flex items-center justify-center ring-1 ring-primary-100 flex-shrink-0">
+                          <span className="text-primary-700 font-semibold text-sm">
                             {contact.first_name?.[0]}{contact.last_name?.[0]}
                           </span>
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900">{contact.first_name} {contact.last_name}</p>
-                          <p className="text-sm text-gray-500">{contact.title || 'No title'}</p>
+                          <p className="font-medium text-gray-900 text-sm">{contact.first_name} {contact.last_name}</p>
+                          <p className="text-xs text-gray-500">{contact.title || 'No title'}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="py-3 px-4">
-                      <div className="flex items-center space-x-2">
-                        <Building className="h-4 w-4 text-gray-400" />
-                        <p className="text-gray-600">{contact.company || '-'}</p>
-                      </div>
+                    <td className="py-4 px-6">
+                      <p className="text-sm text-gray-700">{contact.company || '-'}</p>
                     </td>
-                    <td className="py-3 px-4">
+                    <td className="py-4 px-6">
                       <div className="space-y-1">
-                        <div className="flex items-center space-x-2">
-                          <Mail className="h-4 w-4 text-gray-400" />
-                          <p className="text-gray-600">{contact.email}</p>
-                        </div>
+                        <p className="text-sm text-gray-700">{contact.email}</p>
                         {contact.phone && (
-                          <div className="flex items-center space-x-2">
-                            <Phone className="h-4 w-4 text-gray-400" />
-                            <p className="text-gray-600">{contact.phone}</p>
-                          </div>
+                          <p className="text-sm text-gray-700">{contact.phone}</p>
                         )}
                       </div>
                     </td>
-                    <td className="py-3 px-4">
-                      <span className={`px-3 py-1 text-xs font-medium rounded-full ${
-                        contact.deal_count > 0 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-gray-100 text-gray-800'
+                    <td className="py-4 px-6">
+                      <span className={`badge ${
+                        contact.deal_count > 0
+                          ? 'badge-success'
+                          : 'badge-gray'
                       }`}>
                         {contact.deal_count} deals
                       </span>
                     </td>
-                    <td className="py-3 px-4">
-                      {contact.lead_source ? (
-                        <span className="px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
-                          From Lead
-                        </span>
-                      ) : (
-                        <span className="px-3 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">
-                          Manual
-                        </span>
-                      )}
+                    <td className="py-4 px-6">
+                      <span className={`badge ${
+                        contact.lead_source
+                          ? 'badge-primary'
+                          : 'badge-gray'
+                      }`}>
+                        {contact.lead_source ? 'From Lead' : 'Manual'}
+                      </span>
                     </td>
-                    <td className="py-3 px-4">
-                      <div className="flex space-x-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          icon={Edit}
+                    <td className="py-4 px-6">
+                      <div className="flex items-center justify-end gap-2">
+                        <button
                           onClick={() => setEditingContact(contact)}
+                          className="table-action-btn"
+                          title="Edit contact"
                         >
-                          Edit
-                        </Button>
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          icon={Trash2}
+                          <Edit className="h-4 w-4" />
+                        </button>
+                        <button
                           onClick={() => handleDelete(contact)}
+                          className="table-action-btn hover:text-danger-600 hover:bg-danger-50"
+                          title="Delete contact"
                         >
-                          Delete
-                        </Button>
+                          <Trash2 className="h-4 w-4" />
+                        </button>
                       </div>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            
+
             {(!filteredContacts || filteredContacts.length === 0) && (
-              <div className="text-center py-12">
-                <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-500">No contacts found</p>
-                {searchTerm && (
-                  <p className="text-sm text-gray-400 mt-2">Try changing your search terms</p>
-                )}
+              <div className="empty-state py-16">
+                <div className="p-4 bg-gray-100 rounded-full inline-block mb-4">
+                  <Users className="h-10 w-10 text-gray-400" />
+                </div>
+                <h3 className="text-base font-medium text-gray-900 mb-1">No contacts found</h3>
+                <p className="text-sm text-gray-500">
+                  {searchTerm ? 'Try adjusting your search terms' : 'Get started by adding your first contact'}
+                </p>
               </div>
             )}
           </div>

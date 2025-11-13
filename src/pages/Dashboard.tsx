@@ -21,19 +21,25 @@ export const Dashboard: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-8">
         <div className="flex justify-between items-center">
           <div>
-            <div className="h-8 w-48 bg-gray-200 rounded-lg animate-pulse"></div>
-            <div className="h-4 w-64 bg-gray-200 rounded-lg animate-pulse mt-2"></div>
+            <div className="h-9 w-48 bg-gray-200 rounded-lg animate-pulse"></div>
+            <div className="h-5 w-80 bg-gray-200 rounded-lg animate-pulse mt-3"></div>
           </div>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="bg-white rounded-xl border border-gray-200 p-6 animate-pulse">
-              <div className="h-4 w-20 bg-gray-200 rounded"></div>
-              <div className="h-8 w-16 bg-gray-200 rounded mt-2"></div>
+            <div key={i} className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm animate-pulse">
+              <div className="flex justify-between items-start">
+                <div className="space-y-3 flex-1">
+                  <div className="h-4 w-24 bg-gray-200 rounded"></div>
+                  <div className="h-8 w-20 bg-gray-200 rounded"></div>
+                  <div className="h-3 w-32 bg-gray-200 rounded"></div>
+                </div>
+                <div className="h-12 w-12 bg-gray-200 rounded-lg"></div>
+              </div>
             </div>
           ))}
         </div>
@@ -43,12 +49,14 @@ export const Dashboard: React.FC = () => {
 
   if (error) {
     return (
-      <div className="flex justify-center items-center h-64">
+      <div className="flex justify-center items-center h-96">
         <div className="text-center">
-          <BarChart3 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-600">Failed to load dashboard data</p>
-          <p className="text-sm text-gray-500 mt-2">
-            {error instanceof Error ? error.message : 'Please check your connection'}
+          <div className="p-4 bg-danger-50 rounded-full inline-block mb-4">
+            <BarChart3 className="h-10 w-10 text-danger-500" />
+          </div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">Failed to load dashboard data</h3>
+          <p className="text-sm text-gray-500">
+            {error instanceof Error ? error.message : 'Please check your connection and try again'}
           </p>
         </div>
       </div>
@@ -65,17 +73,17 @@ export const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600 mt-2">Welcome back! Here's what's happening today.</p>
+          <h1 className="text-3xl font-semibold text-gray-900 mb-2">Dashboard</h1>
+          <p className="text-gray-600">Welcome back! Here's an overview of your business today.</p>
         </div>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         <StatCard
           title="Total Leads"
           value={dashboardData?.lead_analytics?.total || 0}
@@ -83,7 +91,7 @@ export const Dashboard: React.FC = () => {
           trend={{ value: 12, isPositive: true }}
           description="All time leads"
         />
-        
+
         <StatCard
           title="New Leads"
           value={dashboardData?.lead_analytics?.new || 0}
@@ -91,7 +99,7 @@ export const Dashboard: React.FC = () => {
           trend={{ value: 8, isPositive: true }}
           description="This month"
         />
-        
+
         <StatCard
           title="Pipeline Value"
           value={formatCurrency(dashboardData?.deal_analytics?.total_amount)}
@@ -99,7 +107,7 @@ export const Dashboard: React.FC = () => {
           trend={{ value: 15, isPositive: true }}
           description="Total open deals"
         />
-        
+
         <StatCard
           title="Open Deals"
           value={dashboardData?.deal_analytics?.open_deals || 0}
@@ -110,76 +118,80 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="border border-gray-200">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg font-semibold">Recent Leads</CardTitle>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <Card>
+          <CardHeader>
+            <CardTitle>Recent Leads</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
+          <CardContent className="pt-0">
+            <div className="space-y-2">
               {dashboardData?.recent_leads && dashboardData.recent_leads.length > 0 ? (
                 dashboardData.recent_leads.map((lead) => (
-                  <div key={lead.id} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                    <div className="flex items-center space-x-3">
-                      <div className="h-10 w-10 bg-primary-100 rounded-full flex items-center justify-center">
-                        <span className="text-primary-600 font-medium text-sm">
+                  <div key={lead.id} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-all duration-150 group">
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <div className="h-10 w-10 bg-gradient-to-br from-primary-100 to-primary-50 rounded-lg flex items-center justify-center ring-1 ring-primary-100 flex-shrink-0">
+                        <span className="text-primary-700 font-semibold text-sm">
                           {lead.first_name[0]}{lead.last_name[0]}
                         </span>
                       </div>
-                      <div>
-                        <p className="font-medium text-gray-900">{lead.first_name} {lead.last_name}</p>
-                        <p className="text-sm text-gray-500">{lead.company || 'No company'}</p>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-gray-900 text-sm truncate">{lead.first_name} {lead.last_name}</p>
+                        <p className="text-xs text-gray-500 truncate">{lead.company || 'No company'}</p>
                       </div>
                     </div>
-                    <span className={`px-3 py-1 text-xs font-medium rounded-full ${
-                      lead.status === 'new' ? 'bg-blue-100 text-blue-800' :
-                      lead.status === 'qualified' ? 'bg-green-100 text-green-800' :
-                      lead.status === 'contacted' ? 'bg-yellow-100 text-yellow-800' :
-                      'bg-gray-100 text-gray-800'
+                    <span className={`px-2.5 py-1 text-xs font-medium rounded-md border flex-shrink-0 ml-2 ${
+                      lead.status === 'new' ? 'bg-primary-50 text-primary-700 border-primary-200' :
+                      lead.status === 'qualified' ? 'bg-success-50 text-success-700 border-success-200' :
+                      lead.status === 'contacted' ? 'bg-warning-50 text-warning-700 border-warning-200' :
+                      'bg-gray-100 text-gray-700 border-gray-200'
                     }`}>
                       {lead.status}
                     </span>
                   </div>
                 ))
               ) : (
-                <div className="text-center py-8 text-gray-500">
-                  <Users className="h-12 w-12 mx-auto mb-3 opacity-50" />
-                  <p>No recent leads</p>
+                <div className="empty-state py-12">
+                  <div className="p-3 bg-gray-100 rounded-full inline-block mb-3">
+                    <Users className="h-8 w-8 text-gray-400" />
+                  </div>
+                  <p className="text-sm text-gray-500">No recent leads</p>
                 </div>
               )}
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border border-gray-200">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg font-semibold">Recent Deals</CardTitle>
+        <Card>
+          <CardHeader>
+            <CardTitle>Recent Deals</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
+          <CardContent className="pt-0">
+            <div className="space-y-2">
               {dashboardData?.recent_deals && dashboardData.recent_deals.length > 0 ? (
                 dashboardData.recent_deals.map((deal) => (
-                  <div key={deal.id} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                    <div>
-                      <p className="font-medium text-gray-900">{deal.name}</p>
-                      <p className="text-sm text-gray-500">{deal.contact_name || 'No contact'}</p>
+                  <div key={deal.id} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-all duration-150 group">
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-gray-900 text-sm truncate">{deal.name}</p>
+                      <p className="text-xs text-gray-500 truncate">{deal.contact_name || 'No contact'}</p>
                     </div>
-                    <div className="text-right">
-                      <p className="font-semibold text-gray-900">{formatCurrency(deal.amount)}</p>
-                      <span className={`px-3 py-1 text-xs font-medium rounded-full ${
-                        deal.stage === 'closed_won' ? 'bg-green-100 text-green-800' :
-                        deal.stage === 'closed_lost' ? 'bg-red-100 text-red-800' :
-                        'bg-yellow-100 text-yellow-800'
+                    <div className="text-right flex-shrink-0 ml-4">
+                      <p className="font-semibold text-gray-900 text-sm mb-1">{formatCurrency(deal.amount)}</p>
+                      <span className={`inline-block px-2.5 py-1 text-xs font-medium rounded-md border ${
+                        deal.stage === 'closed_won' ? 'bg-success-50 text-success-700 border-success-200' :
+                        deal.stage === 'closed_lost' ? 'bg-danger-50 text-danger-700 border-danger-200' :
+                        'bg-warning-50 text-warning-700 border-warning-200'
                       }`}>
-                        {deal.stage}
+                        {deal.stage.replace('_', ' ')}
                       </span>
                     </div>
                   </div>
                 ))
               ) : (
-                <div className="text-center py-8 text-gray-500">
-                  <DollarSign className="h-12 w-12 mx-auto mb-3 opacity-50" />
-                  <p>No recent deals</p>
+                <div className="empty-state py-12">
+                  <div className="p-3 bg-gray-100 rounded-full inline-block mb-3">
+                    <DollarSign className="h-8 w-8 text-gray-400" />
+                  </div>
+                  <p className="text-sm text-gray-500">No recent deals</p>
                 </div>
               )}
             </div>

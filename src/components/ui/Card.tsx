@@ -7,7 +7,7 @@ interface CardProps {
 
 export const Card: React.FC<CardProps> = ({ children, className = '' }) => {
   return (
-    <div className={`bg-white rounded-xl border border-gray-200 shadow-soft hover:shadow-medium transition-shadow duration-200 ${className}`}>
+    <div className={`bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 ${className}`}>
       {children}
     </div>
   );
@@ -18,7 +18,7 @@ export const CardHeader: React.FC<{ children: React.ReactNode; className?: strin
   className = ''
 }) => {
   return (
-    <div className={`p-5 pb-3 border-b border-gray-100 ${className}`}>
+    <div className={`px-6 py-4 border-b border-gray-200 ${className}`}>
       {children}
     </div>
   );
@@ -29,7 +29,7 @@ export const CardTitle: React.FC<{ children: React.ReactNode; className?: string
   className = ''
 }) => {
   return (
-    <h3 className={`text-base font-semibold text-gray-900 leading-none ${className}`}>
+    <h3 className={`text-base font-semibold text-gray-900 ${className}`}>
       {children}
     </h3>
   );
@@ -40,7 +40,7 @@ export const CardContent: React.FC<{ children: React.ReactNode; className?: stri
   className = ''
 }) => {
   return (
-    <div className={`p-5 ${className}`}>
+    <div className={`p-6 ${className}`}>
       {children}
     </div>
   );
