@@ -54,7 +54,8 @@ export interface Deal {
   assigned_to: number | null;
   assigned_to_name?: string;
   amount: string | null;
-  stage: string;
+  stage: string; // Legacy field, kept for backward compatibility
+  pipeline_stage: number | null; // New field - pipeline stage ID
   expected_close_date: string | null;
   probability: number;
   notes: string;

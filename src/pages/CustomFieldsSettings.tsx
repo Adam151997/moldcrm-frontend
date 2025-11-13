@@ -82,7 +82,8 @@ export const CustomFieldsSettings: React.FC = () => {
 
     const submitData = {
       ...formData,
-      custom_object: 1, // Deals object (you may need to adjust this)
+      entity_type: 'deal', // Required field for custom fields
+      custom_object: null, // Only used for custom objects, null for standard entities
       order: fields ? fields.length : 0,
       options: formData.field_type === 'select' ? formData.options : null,
     };

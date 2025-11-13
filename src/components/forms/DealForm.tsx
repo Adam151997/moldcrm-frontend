@@ -22,7 +22,7 @@ export const DealForm: React.FC<DealFormProps> = ({
     name: '',
     contact: '',
     amount: '',
-    stage: 'prospect',
+    pipeline_stage: '',
     expected_close_date: '',
     probability: 50,
     notes: '',
@@ -49,7 +49,7 @@ export const DealForm: React.FC<DealFormProps> = ({
         name: deal.name,
         contact: deal.contact.toString(),
         amount: deal.amount || '',
-        stage: deal.stage,
+        pipeline_stage: deal.pipeline_stage?.toString() || '',
         expected_close_date: deal.expected_close_date || '',
         probability: deal.probability,
         notes: deal.notes || '',
@@ -80,6 +80,7 @@ export const DealForm: React.FC<DealFormProps> = ({
       ...formData,
       contact: parseInt(formData.contact),
       amount: formData.amount ? parseFloat(formData.amount) : null,
+      pipeline_stage: formData.pipeline_stage ? parseInt(formData.pipeline_stage) : null,
       probability: parseInt(formData.probability.toString()),
       custom_data: customFieldsData,
     };
@@ -191,20 +192,13 @@ export const DealForm: React.FC<DealFormProps> = ({
     }));
   };
 
-  // Use dynamic stages or fallback to default
+  // Use dynamic stages
   const stageOptions = pipelineStages && pipelineStages.length > 0
     ? pipelineStages.map(stage => ({
-        value: stage.name,
+        value: stage.id.toString(),
         label: stage.display_name,
       }))
-    : [
-        { value: 'prospect', label: 'Prospect' },
-        { value: 'qualification', label: 'Qualification' },
-        { value: 'proposal', label: 'Proposal' },
-        { value: 'negotiation', label: 'Negotiation' },
-        { value: 'closed_won', label: 'Won' },
-        { value: 'closed_lost', label: 'Lost' },
-      ];
+    : [];
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -277,17 +271,18 @@ export const DealForm: React.FC<DealFormProps> = ({
             </div>
 
             <div>
-              <label htmlFor="stage" className="form-label">
+              <label htmlFor="pipeline_stage" className="form-label">
                 Stage *
               </label>
               <select
-                id="stage"
-                name="stage"
+                id="pipeline_stage"
+                name="pipeline_stage"
                 required
-                value={formData.stage}
+                value={formData.pipeline_stage}
                 onChange={handleChange}
                 className="select-field"
               >
+                <option value="">Select a stage</option>
                 {stageOptions.map((stage) => (
                   <option key={stage.value} value={stage.value}>
                     {stage.label}
