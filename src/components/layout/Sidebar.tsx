@@ -41,42 +41,49 @@ export const Sidebar: React.FC = () => {
       <div className="lg:hidden fixed top-4 left-4 z-50">
         <button
           onClick={() => setIsMobileOpen(!isMobileOpen)}
-          className="p-2 bg-white rounded-lg shadow-medium border border-gray-200"
+          className="p-2 bg-white rounded-lg shadow-md border border-gray-200 hover:bg-gray-50 transition-all duration-150"
         >
-          {isMobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          {isMobileOpen ? <X className="h-5 w-5 text-gray-700" /> : <Menu className="h-5 w-5 text-gray-700" />}
         </button>
       </div>
 
       {/* Sidebar */}
       <div className={`
         fixed lg:static inset-y-0 left-0 z-40
-        w-64 bg-white border-r border-gray-200 transform
+        w-64 bg-white border-r border-gray-200 shadow-sm transform
         ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
         lg:translate-x-0 transition-transform duration-200 ease-in-out
+        flex flex-col
       `}>
         {/* Logo */}
         <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
-          <h1 className="text-xl font-bold text-gray-900">MoldCRM</h1>
+          <div className="flex items-center gap-2">
+            <div className="h-8 w-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center shadow-sm">
+              <span className="text-white font-bold text-sm">M</span>
+            </div>
+            <h1 className="text-lg font-semibold text-gray-900">MoldCRM</h1>
+          </div>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-4 py-6 space-y-6 overflow-y-auto">
+        <nav className="flex-1 px-3 py-4 space-y-6 overflow-y-auto">
           {/* Main Navigation */}
-          <div className="space-y-2">
+          <div className="space-y-1">
             {navigation.map((item) => {
               const Icon = item.icon;
+              const active = isActive(item.href);
               return (
                 <Link
                   key={item.name}
                   to={item.href}
                   onClick={() => setIsMobileOpen(false)}
-                  className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-150 ${
-                    isActive(item.href)
-                      ? 'bg-primary-50 text-primary-700 border border-primary-200'
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  className={`flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-150 ${
+                    active
+                      ? 'bg-primary-50 text-primary-700 shadow-xs'
+                      : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                   }`}
                 >
-                  <Icon className="h-5 w-5 mr-3" />
+                  <Icon className={`h-5 w-5 ${active ? 'text-primary-600' : 'text-gray-400'}`} />
                   {item.name}
                 </Link>
               );
@@ -84,27 +91,28 @@ export const Sidebar: React.FC = () => {
           </div>
 
           {/* Settings Section */}
-          <div className="space-y-2">
-            <div className="flex items-center px-4 py-2">
-              <Settings className="h-4 w-4 text-gray-400 mr-2" />
-              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2 px-3 py-2">
+              <Settings className="h-4 w-4 text-gray-400" />
+              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                 Settings
               </span>
             </div>
             {settingsNavigation.map((item) => {
               const Icon = item.icon;
+              const active = isActive(item.href);
               return (
                 <Link
                   key={item.name}
                   to={item.href}
                   onClick={() => setIsMobileOpen(false)}
-                  className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-150 ${
-                    isActive(item.href)
-                      ? 'bg-primary-50 text-primary-700 border border-primary-200'
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  className={`flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-150 ${
+                    active
+                      ? 'bg-primary-50 text-primary-700 shadow-xs'
+                      : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                   }`}
                 >
-                  <Icon className="h-5 w-5 mr-3" />
+                  <Icon className={`h-5 w-5 ${active ? 'text-primary-600' : 'text-gray-400'}`} />
                   {item.name}
                 </Link>
               );
@@ -113,18 +121,18 @@ export const Sidebar: React.FC = () => {
         </nav>
 
         {/* User Section */}
-        <div className="p-4 border-t border-gray-200">
-          <div className="flex items-center px-4 py-3">
-            <div className="h-8 w-8 bg-primary-500 rounded-full flex items-center justify-center">
-              <span className="text-sm font-medium text-white">
+        <div className="p-4 border-t border-gray-200 bg-gray-25">
+          <div className="flex items-center gap-3 px-2 py-2">
+            <div className="h-8 w-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center shadow-sm ring-1 ring-primary-100">
+              <span className="text-sm font-semibold text-white">
                 {user?.first_name?.[0]}{user?.last_name?.[0]}
               </span>
             </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-gray-900">
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-gray-900 truncate">
                 {user?.first_name} {user?.last_name}
               </p>
-              <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
+              <p className="text-xs text-gray-500 capitalize truncate">{user?.role}</p>
             </div>
           </div>
         </div>
