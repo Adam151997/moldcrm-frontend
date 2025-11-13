@@ -57,8 +57,8 @@ export const Deals: React.FC = () => {
   });
 
   const updateStageMutation = useMutation({
-    mutationFn: ({ dealId, stage }: { dealId: number; stage: string }) =>
-      dealsAPI.updateStage(dealId, stage),
+    mutationFn: ({ dealId, pipelineStageId }: { dealId: number; pipelineStageId: number }) =>
+      dealsAPI.updateStage(dealId, pipelineStageId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['deals'] });
       queryClient.invalidateQueries({ queryKey: ['deals', 'analytics'] });
@@ -71,8 +71,8 @@ export const Deals: React.FC = () => {
     }
   };
 
-  const handleStageUpdate = (deal: Deal, newStage: string) => {
-    updateStageMutation.mutate({ dealId: deal.id, stage: newStage });
+  const handleStageUpdate = (deal: Deal, pipelineStageId: number) => {
+    updateStageMutation.mutate({ dealId: deal.id, pipelineStageId: pipelineStageId });
   };
 
   const filteredDeals = deals?.filter(deal => {
@@ -296,8 +296,8 @@ export const Deals: React.FC = () => {
                     </td>
                     <td className="py-4 px-6">
                       <select
-                        value={deal.stage}
-                        onChange={(e) => handleStageUpdate(deal, e.target.value)}
+                        value={deal.pipeline_stage || ''}
+                        onChange={(e) => handleStageUpdate(deal, Number(e.target.value))}
                         className="badge text-xs font-medium cursor-pointer hover:opacity-80 transition-opacity"
                         style={{
                           backgroundColor: getStageColorClass(deal.stage).bg,
@@ -306,21 +306,10 @@ export const Deals: React.FC = () => {
                         }}
                       >
                         {(pipelineStages && pipelineStages.length > 0 ? pipelineStages : []).map(stage => (
-                          <option key={stage.name} value={stage.name}>
+                          <option key={stage.id} value={stage.id}>
                             {stage.display_name}
                           </option>
                         ))}
-                        {/* Fallback if no stages configured */}
-                        {(!pipelineStages || pipelineStages.length === 0) && (
-                          <>
-                            <option value="prospect">Prospect</option>
-                            <option value="qualification">Qualification</option>
-                            <option value="proposal">Proposal</option>
-                            <option value="negotiation">Negotiation</option>
-                            <option value="closed_won">Won</option>
-                            <option value="closed_lost">Lost</option>
-                          </>
-                        )}
                       </select>
                     </td>
                     <td className="py-4 px-6">
