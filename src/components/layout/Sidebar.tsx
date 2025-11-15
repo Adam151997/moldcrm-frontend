@@ -19,6 +19,7 @@ import {
   Repeat,
   BarChart3,
   FileText,
+  Palette,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -45,6 +46,7 @@ export const Sidebar: React.FC = () => {
   ];
 
   const settingsNavigation = [
+    { name: 'Theme', href: '/settings/theme', icon: Palette },
     { name: 'Templates', href: '/settings/templates', icon: Sparkles },
     { name: 'Pipeline Stages', href: '/settings/pipeline', icon: Sliders },
     { name: 'Custom Fields', href: '/settings/custom-fields', icon: LayoutIcon },
@@ -79,12 +81,9 @@ export const Sidebar: React.FC = () => {
       `}>
         {/* Logo */}
         <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center shadow-sm">
-              <span className="text-white font-bold text-sm">M</span>
-            </div>
-            <h1 className="text-lg font-semibold text-gray-900">MoldCRM</h1>
-          </div>
+          <h1 className="text-sm text-gray-900" style={{ fontFamily: "'Press Start 2P', cursive" }}>
+            Mold CRM
+          </h1>
         </div>
 
         {/* Navigation */}
