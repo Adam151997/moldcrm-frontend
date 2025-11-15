@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { aiInsightsAPI, leadsAPI, dealsAPI } from '../services/api';
-import { AIInsight, Lead, Deal } from '../types';
+import { aiInsightsAPI } from '../services/api';
+import { AIInsight } from '../types';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
+import { AIAgentChat } from '../components/AIAgentChat';
 import {
   Brain,
   TrendingUp,
@@ -14,6 +15,8 @@ import {
   Zap,
   Check,
   Eye,
+  AlertCircle,
+  Sparkles,
 } from 'lucide-react';
 
 export const AIInsights: React.FC = () => {
@@ -25,36 +28,10 @@ export const AIInsights: React.FC = () => {
     queryFn: () => aiInsightsAPI.getAll(),
   });
 
-  const { data: leads } = useQuery({
-    queryKey: ['leads'],
-    queryFn: () => leadsAPI.getAll(),
-  });
-
-  const { data: deals } = useQuery({
-    queryKey: ['deals'],
-    queryFn: () => dealsAPI.getAll(),
-  });
-
   const markReadMutation = useMutation({
     mutationFn: (id: number) => aiInsightsAPI.markRead(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ai-insights'] });
-    },
-  });
-
-  const generateLeadScoreMutation = useMutation({
-    mutationFn: (leadId: number) => aiInsightsAPI.generateLeadScore(leadId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['ai-insights'] });
-      alert('Lead score generated successfully!');
-    },
-  });
-
-  const generateDealPredictionMutation = useMutation({
-    mutationFn: (dealId: number) => aiInsightsAPI.generateDealPrediction(dealId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['ai-insights'] });
-      alert('Deal prediction generated successfully!');
     },
   });
 
@@ -64,6 +41,10 @@ export const AIInsights: React.FC = () => {
     sentiment: MessageSquare,
     suggestion: Lightbulb,
     summary: FileText,
+    agent_query: Sparkles,
+    agent_lead: Target,
+    agent_deal: TrendingUp,
+    agent_report: FileText,
   };
 
   const insightTypeLabels: Record<string, string> = {
@@ -72,6 +53,10 @@ export const AIInsights: React.FC = () => {
     sentiment: 'Sentiment Analysis',
     suggestion: 'Smart Suggestion',
     summary: 'Summary',
+    agent_query: 'AI Agent Query',
+    agent_lead: 'Lead Action',
+    agent_deal: 'Deal Action',
+    agent_report: 'Report',
   };
 
   const insightTypeColors: Record<string, string> = {
@@ -80,6 +65,10 @@ export const AIInsights: React.FC = () => {
     sentiment: 'bg-purple-100 text-purple-700',
     suggestion: 'bg-yellow-100 text-yellow-700',
     summary: 'bg-gray-100 text-gray-700',
+    agent_query: 'bg-primary-100 text-primary-700',
+    agent_lead: 'bg-blue-100 text-blue-700',
+    agent_deal: 'bg-green-100 text-green-700',
+    agent_report: 'bg-gray-100 text-gray-700',
   };
 
   const filteredInsights = insights?.filter((insight: AIInsight) => {
@@ -89,6 +78,13 @@ export const AIInsights: React.FC = () => {
   });
 
   const unreadCount = insights?.filter((i: AIInsight) => !i.is_read).length || 0;
+
+  const handleAgentActionComplete = () => {
+    queryClient.invalidateQueries({ queryKey: ['ai-insights'] });
+    queryClient.invalidateQueries({ queryKey: ['leads'] });
+    queryClient.invalidateQueries({ queryKey: ['deals'] });
+    queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+  };
 
   if (isLoading) {
     return (
@@ -112,10 +108,10 @@ export const AIInsights: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Brain className="h-8 w-8 text-primary-600" />
-            <h1 className="text-3xl font-semibold text-theme-text-primary">AI Insights</h1>
+            <h1 className="text-3xl font-semibold text-theme-text-primary">AI Assistant</h1>
           </div>
           <p className="text-theme-text-secondary">
-            AI-powered insights and recommendations powered by Google Gemini
+            AI-powered conversational assistant powered by Google Gemini 1.5
           </p>
         </div>
         <div className="flex gap-2">
@@ -125,63 +121,92 @@ export const AIInsights: React.FC = () => {
         </div>
       </div>
 
-      {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Generate Lead Scores</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-theme-text-secondary mb-4">
-              Get AI-powered scoring for your leads with recommendations
-            </p>
-            <select
-              className="select-field mb-3"
-              onChange={(e) => {
-                if (e.target.value) {
-                  generateLeadScoreMutation.mutate(Number(e.target.value));
-                  e.target.value = '';
-                }
-              }}
-              disabled={generateLeadScoreMutation.isPending}
-            >
-              <option value="">Select a lead...</option>
-              {leads?.map((lead: Lead) => (
-                <option key={lead.id} value={lead.id}>
-                  {lead.first_name} {lead.last_name} - {lead.company}
-                </option>
-              ))}
-            </select>
-          </CardContent>
-        </Card>
+      {/* Deprecation Notice for Old System */}
+      <Card className="border-warning-300 bg-warning-50">
+        <CardContent className="p-4">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="h-5 w-5 text-warning-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <h3 className="text-sm font-semibold text-warning-800 mb-1">
+                New AI Agent System Available
+              </h3>
+              <p className="text-sm text-warning-700">
+                The old "Generate Lead Score" and "Predict Deal Outcomes" features have been replaced with a more powerful conversational AI agent below.
+                You can now ask natural language questions like "Score lead #123" or "Predict the outcome of deal #456" and much more!
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Predict Deal Outcomes</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-theme-text-secondary mb-4">
-              Get AI predictions for your deals' close probability and date
-            </p>
-            <select
-              className="select-field mb-3"
-              onChange={(e) => {
-                if (e.target.value) {
-                  generateDealPredictionMutation.mutate(Number(e.target.value));
-                  e.target.value = '';
-                }
-              }}
-              disabled={generateDealPredictionMutation.isPending}
-            >
-              <option value="">Select a deal...</option>
-              {deals?.map((deal: Deal) => (
-                <option key={deal.id} value={deal.id}>
-                  {deal.name} - ${deal.amount || 0}
-                </option>
-              ))}
-            </select>
-          </CardContent>
-        </Card>
+      {/* AI Agent Chat Interface */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <div style={{ height: '600px' }}>
+            <AIAgentChat
+              context={{ page: 'ai-insights' }}
+              onActionComplete={handleAgentActionComplete}
+            />
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">What You Can Ask</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="space-y-2">
+                <p className="text-xs font-medium text-theme-text-secondary uppercase tracking-wide">
+                  Lead Management
+                </p>
+                <ul className="text-sm text-theme-text-secondary space-y-1">
+                  <li>• "Show me leads from Google"</li>
+                  <li>• "Create a lead for John Doe"</li>
+                  <li>• "Update lead #123 to qualified"</li>
+                  <li>• "Score lead #456"</li>
+                </ul>
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-xs font-medium text-theme-text-secondary uppercase tracking-wide">
+                  Deal Analytics
+                </p>
+                <ul className="text-sm text-theme-text-secondary space-y-1">
+                  <li>• "Show my pipeline summary"</li>
+                  <li>• "What's the status of deal #789?"</li>
+                  <li>• "Move deal #123 to negotiation"</li>
+                  <li>• "Predict deal #456 outcome"</li>
+                </ul>
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-xs font-medium text-theme-text-secondary uppercase tracking-wide">
+                  Reporting
+                </p>
+                <ul className="text-sm text-theme-text-secondary space-y-1">
+                  <li>• "How many deals in proposal?"</li>
+                  <li>• "Total pipeline value?"</li>
+                  <li>• "Lead conversion summary"</li>
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Activity History</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-theme-text-secondary">
+                {insights?.length || 0} total insights
+              </p>
+              <p className="text-sm text-theme-text-secondary">
+                {unreadCount} unread
+              </p>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       {/* Filters */}
@@ -225,11 +250,12 @@ export const AIInsights: React.FC = () => {
         </CardContent>
       </Card>
 
-      {/* Insights List */}
+      {/* Insights History List */}
       <div className="space-y-4">
+        <h2 className="text-xl font-semibold text-theme-text-primary">Insights History</h2>
         {filteredInsights?.map((insight: AIInsight) => {
-          const Icon = insightTypeIcons[insight.insight_type];
-          const colorClass = insightTypeColors[insight.insight_type];
+          const Icon = insightTypeIcons[insight.insight_type] || Sparkles;
+          const colorClass = insightTypeColors[insight.insight_type] || 'bg-gray-100 text-gray-700';
 
           return (
             <Card key={insight.id} className={!insight.is_read ? 'border-primary-300' : ''}>
@@ -246,7 +272,7 @@ export const AIInsights: React.FC = () => {
                           {insight.title}
                         </h3>
                         <span className={`badge ${colorClass} text-xs`}>
-                          {insightTypeLabels[insight.insight_type]}
+                          {insightTypeLabels[insight.insight_type] || 'AI Agent'}
                         </span>
                       </div>
                       {!insight.is_read && (
@@ -304,7 +330,7 @@ export const AIInsights: React.FC = () => {
             </div>
             <h3 className="text-base font-medium text-theme-text-primary mb-1">No insights yet</h3>
             <p className="text-sm text-theme-text-tertiary">
-              Generate lead scores or deal predictions to get AI-powered insights
+              Start chatting with the AI assistant above to generate insights
             </p>
           </div>
         )}
