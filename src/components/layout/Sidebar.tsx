@@ -27,6 +27,8 @@ export const Sidebar: React.FC = () => {
   const location = useLocation();
   const { user, logout } = useAuth();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isSettingsCollapsed, setIsSettingsCollapsed] = useState(false);
+  const [isAutomationCollapsed, setIsAutomationCollapsed] = useState(false);
 
   const navigation = [
     { name: 'Dashboard', href: '/', icon: LayoutDashboard },
@@ -113,60 +115,112 @@ export const Sidebar: React.FC = () => {
 
           {/* Automation Section */}
           <div className="space-y-1">
-            <div className="flex items-center gap-2 px-3 py-2">
-              <Zap className="h-4 w-4 text-gray-400" />
-              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                Automation
-              </span>
+            <button
+              onClick={() => setIsAutomationCollapsed(!isAutomationCollapsed)}
+              className="flex items-center justify-between w-full px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors duration-150 group"
+            >
+              <div className="flex items-center gap-2">
+                <Zap className="h-4 w-4 text-gray-400 group-hover:text-gray-600 transition-colors" />
+                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide group-hover:text-gray-700 transition-colors">
+                  Automation
+                </span>
+              </div>
+              <svg
+                className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${
+                  isAutomationCollapsed ? '-rotate-90' : 'rotate-0'
+                }`}
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div
+              className={`overflow-hidden transition-all duration-200 ${
+                isAutomationCollapsed ? 'max-h-0 opacity-0' : 'max-h-96 opacity-100'
+              }`}
+            >
+              <div className="space-y-1">
+                {automationNavigation.map((item) => {
+                  const Icon = item.icon;
+                  const active = isActive(item.href);
+                  return (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      onClick={() => setIsMobileOpen(false)}
+                      className={`flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-150 ${
+                        active
+                          ? 'bg-primary-50 text-primary-700 shadow-xs'
+                          : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                      }`}
+                    >
+                      <Icon className={`h-5 w-5 ${active ? 'text-primary-600' : 'text-gray-400'}`} />
+                      {item.name}
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
-            {automationNavigation.map((item) => {
-              const Icon = item.icon;
-              const active = isActive(item.href);
-              return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  onClick={() => setIsMobileOpen(false)}
-                  className={`flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-150 ${
-                    active
-                      ? 'bg-primary-50 text-primary-700 shadow-xs'
-                      : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-                  }`}
-                >
-                  <Icon className={`h-5 w-5 ${active ? 'text-primary-600' : 'text-gray-400'}`} />
-                  {item.name}
-                </Link>
-              );
-            })}
           </div>
 
           {/* Settings Section */}
           <div className="space-y-1">
-            <div className="flex items-center gap-2 px-3 py-2">
-              <Settings className="h-4 w-4 text-gray-400" />
-              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                Settings
-              </span>
+            <button
+              onClick={() => setIsSettingsCollapsed(!isSettingsCollapsed)}
+              className="flex items-center justify-between w-full px-3 py-2 hover:bg-gray-50 rounded-lg transition-colors duration-150 group"
+            >
+              <div className="flex items-center gap-2">
+                <Settings className="h-4 w-4 text-gray-400 group-hover:text-gray-600 transition-colors" />
+                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide group-hover:text-gray-700 transition-colors">
+                  Settings
+                </span>
+              </div>
+              <svg
+                className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${
+                  isSettingsCollapsed ? '-rotate-90' : 'rotate-0'
+                }`}
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div
+              className={`overflow-hidden transition-all duration-200 ${
+                isSettingsCollapsed ? 'max-h-0 opacity-0' : 'max-h-96 opacity-100'
+              }`}
+            >
+              <div className="space-y-1">
+                {settingsNavigation.map((item) => {
+                  const Icon = item.icon;
+                  const active = isActive(item.href);
+                  return (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      onClick={() => setIsMobileOpen(false)}
+                      className={`flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-150 ${
+                        active
+                          ? 'bg-primary-50 text-primary-700 shadow-xs'
+                          : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                      }`}
+                    >
+                      <Icon className={`h-5 w-5 ${active ? 'text-primary-600' : 'text-gray-400'}`} />
+                      {item.name}
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
-            {settingsNavigation.map((item) => {
-              const Icon = item.icon;
-              const active = isActive(item.href);
-              return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  onClick={() => setIsMobileOpen(false)}
-                  className={`flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-150 ${
-                    active
-                      ? 'bg-primary-50 text-primary-700 shadow-xs'
-                      : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-                  }`}
-                >
-                  <Icon className={`h-5 w-5 ${active ? 'text-primary-600' : 'text-gray-400'}`} />
-                  {item.name}
-                </Link>
-              );
-            })}
           </div>
         </nav>
 
