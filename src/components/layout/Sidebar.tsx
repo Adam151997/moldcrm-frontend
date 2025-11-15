@@ -15,6 +15,7 @@ import {
   Zap,
   Mail,
   Webhook as WebhookIcon,
+  Plug,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -41,6 +42,7 @@ export const Sidebar: React.FC = () => {
     { name: 'Pipeline Stages', href: '/settings/pipeline', icon: Sliders },
     { name: 'Custom Fields', href: '/settings/custom-fields', icon: LayoutIcon },
     { name: 'Email Providers', href: '/email-providers', icon: Mail },
+    { name: 'Plugins', href: '/plugins', icon: Plug },
     { name: 'Webhooks', href: '/settings/webhooks', icon: WebhookIcon },
   ];
 

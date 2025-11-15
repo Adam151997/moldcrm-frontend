@@ -196,3 +196,38 @@ export const emailProvidersAPI = {
   getStats: (id: number) => api.get(`/email-providers/${id}/stats/`).then(res => res.data),
   toggleActive: (id: number) => api.post(`/email-providers/${id}/toggle-active/`).then(res => res.data),
 };
+
+// Plugin API (Google Ads, Meta Ads, TikTok Ads, Shopify)
+export const pluginsAPI = {
+  getAll: () => api.get('/plugins/').then(res => res.data),
+  getById: (id: number) => api.get(`/plugins/${id}/`).then(res => res.data),
+  create: (data: any) => api.post('/plugins/', data).then(res => res.data),
+  update: (id: number, data: any) => api.patch(`/plugins/${id}/`, data).then(res => res.data),
+  delete: (id: number) => api.delete(`/plugins/${id}/`).then(res => res.data),
+  getOAuthUrl: (id: number, redirectUri: string) =>
+    api.get(`/plugins/${id}/oauth-url/?redirect_uri=${encodeURIComponent(redirectUri)}`).then(res => res.data),
+  handleOAuthCallback: (id: number, data: { code: string; state: string; redirect_uri: string }) =>
+    api.post(`/plugins/${id}/oauth-callback/`, data).then(res => res.data),
+  verify: (id: number) => api.post(`/plugins/${id}/verify/`).then(res => res.data),
+  sync: (id: number, data?: { sync_type?: string }) =>
+    api.post(`/plugins/${id}/sync/`, data || {}).then(res => res.data),
+  getAccountInfo: (id: number) => api.get(`/plugins/${id}/account-info/`).then(res => res.data),
+  refreshToken: (id: number) => api.post(`/plugins/${id}/refresh-token/`).then(res => res.data),
+  toggleActive: (id: number) => api.post(`/plugins/${id}/toggle-active/`).then(res => res.data),
+};
+
+export const pluginEventsAPI = {
+  getAll: (pluginId?: number) => {
+    const url = pluginId ? `/plugin-events/?plugin=${pluginId}` : '/plugin-events/';
+    return api.get(url).then(res => res.data);
+  },
+  getById: (id: number) => api.get(`/plugin-events/${id}/`).then(res => res.data),
+};
+
+export const pluginSyncLogsAPI = {
+  getAll: (pluginId?: number) => {
+    const url = pluginId ? `/plugin-sync-logs/?plugin=${pluginId}` : '/plugin-sync-logs/';
+    return api.get(url).then(res => res.data);
+  },
+  getById: (id: number) => api.get(`/plugin-sync-logs/${id}/`).then(res => res.data),
+};
