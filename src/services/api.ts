@@ -111,6 +111,15 @@ export const templatesAPI = {
 };
 
 // AI & Automation API
+// AI Agent API (New conversational AI system)
+export const aiAgentAPI = {
+  query: (query: string, conversationHistory?: any[]) =>
+    api.post('/ai-agent/query/', { query, conversation_history: conversationHistory }).then(res => res.data),
+  getSuggestions: (context?: any) =>
+    api.post('/ai-agent/suggestions/', { context }).then(res => res.data),
+};
+
+// AI Insights API (DEPRECATED - Use aiAgentAPI instead)
 export const aiInsightsAPI = {
   getAll: () => api.get('/ai-insights/').then(res => res.data),
   getById: (id: number) => api.get(`/ai-insights/${id}/`).then(res => res.data),

@@ -139,10 +139,47 @@ export interface AppliedTemplate {
 }
 
 // AI & Automation
+
+// AI Agent (New conversational AI system)
+export interface AIAgentMessage {
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp?: string;
+  function_calls?: AIAgentFunctionCall[];
+}
+
+export interface AIAgentFunctionCall {
+  name: string;
+  arguments: any;
+  result?: any;
+}
+
+export interface AIAgentResponse {
+  response: string;
+  conversation_history: AIAgentMessage[];
+  function_calls?: AIAgentFunctionCall[];
+  metadata?: {
+    processing_time?: number;
+    model_used?: string;
+    [key: string]: any;
+  };
+}
+
+export interface AIAgentSuggestion {
+  text: string;
+  category: 'action' | 'query' | 'insight';
+  priority?: 'high' | 'medium' | 'low';
+}
+
+export interface AIAgentSuggestionsResponse {
+  suggestions: AIAgentSuggestion[];
+}
+
+// AI Insights (DEPRECATED - Use AI Agent instead)
 export interface AIInsight {
   id: number;
   account: number;
-  insight_type: 'lead_score' | 'deal_prediction' | 'sentiment' | 'suggestion' | 'summary';
+  insight_type: 'lead_score' | 'deal_prediction' | 'sentiment' | 'suggestion' | 'summary' | 'agent_query' | 'agent_lead' | 'agent_deal' | 'agent_report';
   lead?: number;
   contact?: number;
   deal?: number;
