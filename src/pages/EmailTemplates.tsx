@@ -4,6 +4,7 @@ import { emailTemplatesAPI } from '../services/api';
 import { EmailTemplate } from '../types';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
+import { RichTextEditor } from '../components/ui/RichTextEditor';
 import {
   Plus,
   Edit,
@@ -158,17 +159,16 @@ const EmailTemplateForm: React.FC<EmailTemplateFormProps> = ({ template, onClose
           </div>
 
           <div>
-            <label className="form-label">Email Body (HTML) *</label>
-            <textarea
-              className="form-input font-mono text-sm"
+            <label className="form-label">Email Body *</label>
+            <RichTextEditor
               value={formData.body_html}
-              onChange={(e) => setFormData({ ...formData, body_html: e.target.value })}
-              placeholder="<html><body><h1>Hello {{contact_name}}</h1><p>Your email content here...</p></body></html>"
-              rows={12}
-              required
+              onChange={(value) => setFormData({ ...formData, body_html: value })}
+              placeholder="Start writing your email..."
+              height="400px"
+              showVariables={true}
             />
             <p className="text-xs text-gray-500 mt-1">
-              HTML content with inline CSS. Available variables: {'{{contact_name}}, {{company_name}}, {{email}}, {{first_name}}, {{last_name}}'}
+              Use the toolbar to format your email. Click "Insert Variable" to add personalization.
             </p>
           </div>
 
