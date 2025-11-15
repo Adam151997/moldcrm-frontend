@@ -7,6 +7,21 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Theme-aware colors using CSS variables
+        'theme-bg': {
+          primary: 'var(--bg-primary)',
+          secondary: 'var(--bg-secondary)',
+          tertiary: 'var(--bg-tertiary)',
+        },
+        'theme-text': {
+          primary: 'var(--text-primary)',
+          secondary: 'var(--text-secondary)',
+          tertiary: 'var(--text-tertiary)',
+        },
+        'theme-border': {
+          primary: 'var(--border-primary)',
+          secondary: 'var(--border-secondary)',
+        },
         // Airtable-inspired primary blue palette
         primary: {
           50: '#F0F7FF',

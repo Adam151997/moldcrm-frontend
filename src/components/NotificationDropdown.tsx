@@ -89,21 +89,21 @@ export const NotificationDropdown: React.FC = () => {
     <div ref={dropdownRef} className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all duration-150 relative"
+        className="p-2 text-theme-text-tertiary hover:text-theme-text-secondary hover:bg-theme-bg-tertiary rounded-lg transition-all duration-150 relative"
       >
         <Bell className="h-5 w-5" />
         {unreadCount > 0 && (
-          <span className="absolute top-1.5 right-1.5 h-2 w-2 bg-danger-500 rounded-full border border-white"></span>
+          <span className="absolute top-1.5 right-1.5 h-2 w-2 bg-danger-500 rounded-full border border-theme-bg-primary"></span>
         )}
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-96 bg-white rounded-lg shadow-lg border border-gray-200 z-50 max-h-[32rem] flex flex-col">
+        <div className="absolute right-0 top-full mt-2 w-96 bg-theme-bg-primary rounded-lg shadow-lg border border-theme-border-primary z-50 max-h-[32rem] flex flex-col">
           {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-200">
+          <div className="flex items-center justify-between p-4 border-b border-theme-border-primary">
             <div className="flex items-center gap-2">
-              <Bell className="h-5 w-5 text-gray-600" />
-              <h3 className="font-semibold text-gray-900">Notifications</h3>
+              <Bell className="h-5 w-5 text-theme-text-secondary" />
+              <h3 className="font-semibold text-theme-text-primary">Notifications</h3>
               {unreadCount > 0 && (
                 <span className="px-2 py-0.5 text-xs font-medium bg-primary-100 text-primary-700 rounded-full">
                   {unreadCount}
@@ -124,7 +124,7 @@ export const NotificationDropdown: React.FC = () => {
                   )}
                   <button
                     onClick={clearAll}
-                    className="text-xs text-gray-500 hover:text-gray-700"
+                    className="text-xs text-theme-text-secondary hover:text-theme-text-primary"
                     title="Clear all"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -138,22 +138,22 @@ export const NotificationDropdown: React.FC = () => {
           <div className="flex-1 overflow-y-auto">
             {notifications.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 px-4">
-                <div className="p-3 bg-gray-100 rounded-full mb-3">
-                  <Bell className="h-8 w-8 text-gray-400" />
+                <div className="p-3 bg-theme-bg-tertiary rounded-full mb-3">
+                  <Bell className="h-8 w-8 text-theme-text-tertiary" />
                 </div>
-                <p className="text-sm font-medium text-gray-900 mb-1">No notifications</p>
-                <p className="text-xs text-gray-500 text-center">
+                <p className="text-sm font-medium text-theme-text-primary mb-1">No notifications</p>
+                <p className="text-xs text-theme-text-secondary text-center">
                   You're all caught up! Check back later for updates.
                 </p>
               </div>
             ) : (
-              <div className="divide-y divide-gray-100">
+              <div className="divide-y divide-theme-border-primary">
                 {notifications.map((notification) => {
                   const Icon = getIcon(notification.type);
                   return (
                     <div
                       key={notification.id}
-                      className={`p-4 hover:bg-gray-50 transition-colors duration-150 ${
+                      className={`p-4 hover:bg-theme-bg-tertiary transition-colors duration-150 ${
                         !notification.read ? 'bg-blue-50/30' : ''
                       }`}
                     >
@@ -167,19 +167,19 @@ export const NotificationDropdown: React.FC = () => {
                               onClick={() => handleNotificationClick(notification)}
                               className="text-left flex-1"
                             >
-                              <p className="text-sm font-medium text-gray-900 mb-0.5">
+                              <p className="text-sm font-medium text-theme-text-primary mb-0.5">
                                 {notification.title}
                               </p>
-                              <p className="text-xs text-gray-600 line-clamp-2">
+                              <p className="text-xs text-theme-text-secondary line-clamp-2">
                                 {notification.message}
                               </p>
-                              <p className="text-xs text-gray-400 mt-1">
+                              <p className="text-xs text-theme-text-tertiary mt-1">
                                 {formatTimestamp(notification.timestamp)}
                               </p>
                             </button>
                             <button
                               onClick={() => removeNotification(notification.id)}
-                              className="text-gray-400 hover:text-gray-600 flex-shrink-0"
+                              className="text-theme-text-tertiary hover:text-theme-text-secondary flex-shrink-0"
                             >
                               <X className="h-4 w-4" />
                             </button>
