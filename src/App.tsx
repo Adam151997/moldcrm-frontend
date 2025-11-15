@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { NotificationProvider } from './contexts/NotificationContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { Layout } from './components/layout/Layout';
 import { Dashboard } from './pages/Dashboard';
@@ -31,10 +32,11 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <AuthProvider>
-          <Router>
-            <ProtectedRoute>
-              <Layout>
+        <NotificationProvider>
+          <AuthProvider>
+            <Router>
+              <ProtectedRoute>
+                <Layout>
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/leads" element={<Leads />} />
@@ -67,6 +69,7 @@ function App() {
             </ProtectedRoute>
           </Router>
         </AuthProvider>
+      </NotificationProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );
