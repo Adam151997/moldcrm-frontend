@@ -323,3 +323,79 @@ export interface ExternalIntegration {
   created_at: string;
   updated_at: string;
 }
+
+// Plugin Integrations (Google Ads, Meta Ads, TikTok Ads, Shopify)
+export interface Plugin {
+  id: number;
+  account: number;
+  plugin_type: 'google_ads' | 'meta_ads' | 'tiktok_ads' | 'shopify';
+  plugin_display?: string;
+  name: string;
+  category: 'advertising' | 'ecommerce' | 'analytics' | 'other';
+  category_display?: string;
+  status: 'active' | 'inactive' | 'error' | 'pending';
+  status_display?: string;
+  client_id: string;
+  client_secret?: string; // write-only
+  masked_client_secret?: string; // read-only masked value
+  access_token?: string; // write-only
+  masked_access_token?: string; // read-only masked value
+  refresh_token?: string; // write-only
+  token_expires_at: string | null;
+  is_token_expired_flag?: boolean;
+  config: any;
+  is_active: boolean;
+  is_verified: boolean;
+  last_sync_at: string | null;
+  last_error: string;
+  sync_frequency: number;
+  created_by: number;
+  created_by_name?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PluginEvent {
+  id: number;
+  plugin: number;
+  plugin_name?: string;
+  event_type: string;
+  event_id: string;
+  payload: any;
+  processed: boolean;
+  processed_at: string | null;
+  lead_created: number | null;
+  contact_created: number | null;
+  deal_created: number | null;
+  error_message: string;
+  created_at: string;
+}
+
+export interface PluginSyncLog {
+  id: number;
+  plugin: number;
+  plugin_name?: string;
+  sync_type: string;
+  status: 'success' | 'failed' | 'partial';
+  records_synced: number;
+  records_created: number;
+  records_updated: number;
+  records_failed: number;
+  error_message: string;
+  started_at: string;
+  completed_at: string | null;
+  metadata: any;
+}
+
+export interface PluginOAuthUrl {
+  oauth_url: string;
+  state: string;
+}
+
+export interface PluginAccountInfo {
+  account_id?: string;
+  account_name?: string;
+  account_email?: string;
+  account_status?: string;
+  additional_info?: any;
+}

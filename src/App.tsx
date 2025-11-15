@@ -16,6 +16,8 @@ import { Workflows } from './pages/Workflows';
 import { EmailCampaigns } from './pages/EmailCampaigns';
 import { EmailProviders } from './pages/EmailProviders';
 import { WebhookSettings } from './pages/WebhookSettings';
+import { Plugins } from './pages/Plugins';
+import { PluginOAuthCallback } from './pages/PluginOAuthCallback';
 
 // Create a client
 const queryClient = new QueryClient();
@@ -38,6 +40,10 @@ function App() {
                 <Route path="/workflows" element={<Workflows />} />
                 <Route path="/email-campaigns" element={<EmailCampaigns />} />
                 <Route path="/email-providers" element={<EmailProviders />} />
+
+                {/* Plugin Integration Routes */}
+                <Route path="/plugins" element={<Plugins />} />
+                <Route path="/plugins/oauth-callback" element={<PluginOAuthCallback />} />
 
                 {/* Settings Routes */}
                 <Route path="/settings/templates" element={<BusinessTemplates />} />
